@@ -1,31 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
+from time import sleep
 
-url = "https://scrapingclub.com/exercise/list_basic/?page=1"
+for count in range(1, 7): # Добавили еще один цикл
 
-response = requests.get(url)
+    url = f"https://scrapingclub.com/exercise/list_basic/?page={count}" # f-строка и count
 
-soup = BeautifulSoup(response.text, 'lxml') # html.parser - аналог lxml
+    response = requests.get(url)
 
-data = soup.find_all("div", class_="w-full rounded border")
+    soup = BeautifulSoup(response.text, 'lxml')
 
-for i in data:
-    name = i.find("h4").text
-    price = i.find("h5").text
-    url_img = "https://scrapingclub.com" + i.find("img", class_="card-img-top img-fluid").get("src")
+    data = soup.find_all("div", class_="w-full rounded border")
 
-    print(name + '\n' + price + '\n' + url_img + '\n\n')
+    for i in data:
+        name = i.find("h4").text
+        price = i.find("h5").text
+        url_img = "https://scrapingclub.com" + i.find("img", class_="card-img-top img-fluid").get("src")
 
-
-'''name = data.find("h4")
-
-name = data.find("h4").text
-
-price = data.find("h5").text
-
-url_img = "https://scrapingclub.com" + data.find("img", class_="card-img-top img-fluid").get("src")'''
-
-
-fl = open('proba.txt','w', encoding = 'utf-8')
-print(data, file = fl)
-fl.close()
+        print(name + '\n' + price + '\n' + url_img + '\n\n')
